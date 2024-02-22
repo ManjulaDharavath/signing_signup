@@ -15,6 +15,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
@@ -106,20 +107,21 @@ public class signin_signup {
 				String password=tb2.getText();
 				try 
 				{
-				  Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cse","root","manjula123");
-				  PreparedStatement stn=con.prepareStatement("Select user password from users where USER=? and PASSWORD=?");
-				  stn.setString(1,user);
-				  stn=setString(2,password);
-				  ResultSet rs=stn.executeQuery();
-				  if(rs.next())
-				  {
-					  JOptionPane.showMessageDialog(btnNewButton, "valid user!!");
-				  }
-				  else
-				 {
-					  JOptionPane.showMessageDialog(btnNewButton, "invalid user!!"); 
-				  }
-				}
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/CSE","root","manjula123");
+					PreparedStatement stn=con.prepareStatement("select user,password from users where USER=? and PASSWORD =?");
+					stn.setString(1, user);
+					stn.setString(2,password);
+					ResultSet rs =stn.executeQuery();
+					if(rs.next())
+					{
+						JOptionPane.showMessageDialog(btnNewButton, "Valid User ");
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(btnNewButton, "Invalid User \n Please SignUp ");
+					}
+					
+			 }
 				catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -131,6 +133,23 @@ public class signin_signup {
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("SIGN UP");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name=tb3.getText();
+				String pwd=tb4.getText();
+				try {
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/CSE","root","manjula123");
+					String g="insert into users values('"+name+"', '"+pwd+"')";
+					Statement sta=con.createStatement();
+					sta.executeUpdate(g);
+					con.close();
+					JOptionPane.showMessageDialog(btnNewButton_1, "done");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNewButton_1.setBounds(369, 254, 117, 29);
 		frame.getContentPane().add(btnNewButton_1);
 	}
